@@ -9,6 +9,10 @@
                 <h4>
                     <a href="{{ route('posts.show', $post->id) }}">
                         {{ $post->title }}
+
+                        @if ($post->image_url)
+                            <img src="{{ $post->image_url }}" width="200" alt="">
+                        @endif
                     </a>
                 </h4>
                 <p>{{ $post->content }}</p>
