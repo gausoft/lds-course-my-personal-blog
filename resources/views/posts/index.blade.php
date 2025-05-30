@@ -3,6 +3,10 @@
 @section('content')
     <h1>Liste des article de mon blog !</h1>
 
+    @session('message')
+        {{ $value }}
+    @endsession
+
     <ul>
         @foreach ($posts as $post)
             <li>
@@ -16,6 +20,18 @@
                     </a>
                 </h4>
                 <p>{{ $post->content }}</p>
+
+                <a href="{{ route('posts.edit', $post->id) }}" role="button">Éditer</a>
+                <form
+                    action="{{ route('posts.delete', $post->id) }}"
+                    method="POST"
+                    onsubmit="return confirm('Supprimer cet article ?')"
+                >
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Supprimer</button>
+                </form>
+
             </li>
         @endforeach
     </ul>
