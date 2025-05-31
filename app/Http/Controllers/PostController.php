@@ -29,11 +29,15 @@ class PostController extends Controller
             'published_at' => 'nullable|date',
         ]);
 
-        Post::create($request->all());
+        $data = $request->all();
+
+        $user = $request->user(); # Recuperer l'utilisateur connecte
+
+        $user->posts()->create($data);
 
         $message = "L'article a été créé avec succès!";
 
-        return redirect()->route('posts.index')->with('messsage', $message);
+        return redirect()->route('posts.index')->with('message', $message);
     }
 
     public function show(int $id)
@@ -43,9 +47,13 @@ class PostController extends Controller
         return view('posts.show', ['post' => $post]);
     }
 
-    public function edit(int $id)
+    public function edit(Request $request, int $id)
     {
         $post = Post::findOrFail($id);
+
+        if ($request->user()->id !== $post->user_id) {
+            abort(404);
+        }
 
         return view('posts.edit', compact('post')); # compact('post') => ['post' => $post]
     }
@@ -62,15 +70,11 @@ class PostController extends Controller
 
         $post = Post::findOrFail($id);
 
-        $data = $request->only(
-            'title',
-            'content',
-            'summary',
-            'image_url',
-            'published_at'
-        );
+        $data = $request->all();
 
-        $post->update($data);
+        $user = $request->user(); # Recuperer l'utilisateur connecte
+
+        $user->posts()->update($data);
 
         $message = "L'article a été édité avec succès!";
 

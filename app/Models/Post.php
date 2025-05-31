@@ -12,5 +12,11 @@ class Post extends Model
         'summary',
         'image_url',
         'published_at',
+        'user_id',
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

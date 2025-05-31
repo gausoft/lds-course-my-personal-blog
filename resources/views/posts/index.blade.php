@@ -1,11 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.blog')
 
 @section('content')
     <h1>Liste des article de mon blog !</h1>
 
-    @session('message')
-        {{ $value }}
-    @endsession
+    @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
 
     <ul>
         @foreach ($posts as $post)
@@ -20,6 +22,10 @@
                     </a>
                 </h4>
                 <p>{{ $post->content }}</p>
+
+                @if ($post->author)
+                    <p>Rédigé par : {{ $post->author->name ?? 'Anonyme'}}</p>
+                @endif
 
                 <a href="{{ route('posts.edit', $post->id) }}" role="button">Éditer</a>
                 <form

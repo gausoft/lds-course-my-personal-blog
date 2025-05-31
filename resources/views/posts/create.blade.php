@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.blog')
 
 @section('content')
     <h1>Ajout d'un nouvel article</h1>
@@ -10,6 +10,12 @@
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
+        </div>
+    @endif
+
+    @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
         </div>
     @endif
 
